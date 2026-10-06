@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  VISOR DE GALERÍA - PWA educativa
+  ============================================================
+  Esta app NUNCA accede a tus fotos sin que tú lo pidas.
+  En el navegador, esa es la regla de seguridad: el sitio
+  solo puede leer archivos que TÚ seleccionás en un diálogo
+  del sistema operativo. Eso lo vas a ver en el código.
+
+  Flujo:
+  1. Tocás "Elegir fotos" o "Abrir carpeta".
+  2. El SO muestra su diálogo de archivos (esto no lo
+     controla la web, lo controla tu sistema).
+  3. Recién ahí el navegador entrega los archivos a app.js.
+  4. app.js muestra miniaturas y vista ampliada.
+  ============================================================
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport: que se vea bien en celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#121212">
+  <title>Mi Galería (PWA)</title>
+
+  <!-- Manifest = "carnet de identidad" de la PWA.
+       Permite instalarla en el inicio del celular como una app. -->
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>📷 Mi Galería</h1>
+    <p class="subtitle">
+      Seleccioná tus fotos o una carpeta. Nada se sube a internet:
+      todo queda en tu dispositivo y en la memoria de esta pestaña.
+    </p>
+  </header>
+
+  <main>
+    <!-- Barra de acciones -->
+    <section class="acciones">
+      <!-- input oculto: lo "dispara" el botón con JS.
+           accept="image/*" = solo imágenes.
+           multiple = permitir elegir varias a la vez. -->
+      <input type="file" id="inputFotos" accept="image/*" multiple hidden>
+
+      <!-- Carpeta entera: usamos el File System Access API si existe,
+           y si no, caemos al input clásico (ver app.js). -->
+      <input type="file" id="inputCarpeta" webkitdirectory hidden>
+
+      <button id="btnFotos" class="btn primario">🖼️ Elegir fotos</button>
+      <button id="btnCarpeta" class="btn">📁 Abrir carpeta</button>
+      <button id="btnLimpiar" class="btn fantasma" hidden>✖ Limpiar</button>
+    </section>
+
+    <!-- Zona donde se dibuja la cuadrícula de miniaturas -->
+    <section id="grid" class="grid" aria-label="Fotos"></section>
+
+    <!-- Mensaje cuando todavía no hay fotos -->
+    <section id="vacio" class="vacio">
+      <p>Todavía no seleccionaste nada.</p>
+      <p class="hint">Tocá <strong>Elegir fotos</strong> para empezar.</p>
+    </section>
+  </main>
+
+  <!-- Visor ampliado (lightbox). Está oculto con CSS hasta que
+       se le agrega la clase "abierto" desde JS. -->
+  <div id="lightbox" class="lightbox" hidden>
+    <button id="btnCerrar" class="btn-cerrar" aria-label="Cerrar">✖</button>
+    <button id="btnAnterior" class="btn-nav anterior" aria-label="Anterior">‹</button>
+    <img id="imgGrande" alt="Foto ampliada">
+    <button id="btnSiguiente" class="btn-nav siguiente" aria-label="Siguiente">›</button>
+    <p id="contador" class="contador"></p>
+  </div>
+
+  <footer>
+    <p>
+      <strong>¿Cómo funciona?</strong> Mirá el código comentado en
+      <code>app.js</code>. Conceptos clave: permisos de navegador,
+      <em>File System Access API</em>, <em>Object URLs</em> y <em>eventos</em>.
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

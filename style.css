@@ -1,0 +1,132 @@
+/* ============================================================
+   style.css — Hoja de estilos de la galería
+   Conceptos: variables CSS, flexbox/grid, responsive.
+   ============================================================ */
+
+/* Variables: valores reutilizables en todo el archivo.
+   Cambiás acá una vez y se actualiza en todos lados. */
+:root {
+  --fondo: #121212;
+  --superficie: #1e1e1e;
+  --texto: #f1f1f1;
+  --texto-suave: #9e9e9e;
+  --acento: #4f8ef7;
+  --radio: 12px;
+}
+
+/* Reset mínimo: que se vea parejo en todos los navegadores */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header { padding: 24px 16px 8px; text-align: center; }
+h1 { font-size: 1.6rem; }
+.subtitle { color: var(--texto-suave); font-size: 0.9rem; margin-top: 6px; }
+
+main { flex: 1; padding: 16px; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+/* ---- Barra de botones (flexbox) ---- */
+.acciones {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;      /* que los botones pasen de a otra fila en pantallas chicas */
+  margin-bottom: 20px;
+}
+
+.btn {
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid #333;
+  padding: 10px 18px;
+  border-radius: var(--radio);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+.btn:hover { background: #2a2a2a; }
+.btn:active { transform: scale(0.97); }   /* efecto "al tocar" */
+
+.btn.primario { background: var(--acento); border-color: var(--acento); color: #fff; }
+.btn.primario:hover { background: #3d7de6; }
+
+.btn.fantasma { background: transparent; border-color: #444; color: var(--texto-suave); }
+
+/* ---- Cuadrícula de fotos (CSS Grid) ---- */
+.grid {
+  display: grid;
+  /* auto-fill: llena filas automáticamente.
+     minmax(120px, 1fr): cada celda mide al menos 120px
+     y se estira para ocupar el espacio disponible. */
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.grid img {
+  width: 100%;
+  aspect-ratio: 1;      /* cuadrado: alto = ancho */
+  object-fit: cover;    /* recorta sin deformar */
+  border-radius: 8px;
+  cursor: pointer;
+  background: #2a2a2a;
+  transition: transform 0.15s ease;
+}
+.grid img:hover { transform: scale(1.04); }
+
+/* ---- Estado vacío ---- */
+.vacio { text-align: center; color: var(--texto-suave); margin-top: 60px; }
+.vacio .hint { font-size: 0.85rem; margin-top: 8px; }
+
+/* ---- Lightbox (visor ampliado) ---- */
+.lightbox {
+  position: fixed;          /* cubre toda la pantalla, donde sea que esté */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;             /* por encima de todo lo demás */
+}
+.lightbox[hidden] { display: none; }   /* atributo hidden = no mostrar */
+
+.lightbox img {
+  max-width: 92vw;
+  max-height: 84vh;
+  object-fit: contain;
+  border-radius: 6px;
+  user-select: none;        /* que no se pueda "seleccionar" la imagen */
+}
+
+.btn-cerrar {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; color: #fff;
+  font-size: 1.4rem; cursor: pointer;
+}
+
+.btn-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.12); border: none; color: #fff;
+  font-size: 2rem; width: 48px; height: 48px;
+  border-radius: 50%; cursor: pointer;
+}
+.btn-nav.anterior { left: 12px; }
+.btn-nav.siguiente { right: 12px; }
+
+.contador {
+  position: absolute; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: var(--texto-suave); font-size: 0.9rem;
+}
+
+footer {
+  padding: 16px; text-align: center;
+  color: var(--texto-suave); font-size: 0.8rem;
+  border-top: 1px solid #262626;
+}
+footer code { background: #262626; padding: 2px 5px; border-radius: 4px; }
